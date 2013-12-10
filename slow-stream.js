@@ -6,7 +6,7 @@ var through = require('through')
 module.exports = function (speed) {
   var t
   return t = through(function (data) {
-    data.split('').forEach(function (c) {
+    data.toString().split('').forEach(function (c) {
       t.queue(c)
     })
   }).on('data', function () {
