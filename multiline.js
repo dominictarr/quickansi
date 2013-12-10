@@ -1,7 +1,5 @@
 
-
-var diff  = require('adiff').diff
-
+var updateableDiff = require('./updateable')
 
 function toLines (a) {
   return a.split('\n')
@@ -24,32 +22,44 @@ exports.diff = function (a, b) {
   })
 }
 
-//convert a slice style patch to an update style patch,
-//for situations where there is a more efficient way to update in places when it's
-//an overwrite than a splice.
-function updateableDiff (a, b) {
-  var changes = []
-  diff(a, b).forEach(function (_patch) {
-    var patch = _patch.slice()
-    var index = patch.shift()
-    var deletes = patch.shift()
-    var inserts = patch
-    //find updates, so we can diff the lines internally
-    var i = 0
-    var M = Math.min(deletes, inserts.length)
-    for(; i < M; i++) {
-      //these lines are updates
-      changes.push({type: 'update', at: index + i, value: inserts[i], oldValue: a[index + i]})
-    }
-    if(inserts.length > deletes)
-      changes.push({type: 'insert', at: index + i, value: inserts.slice(i)})
-    else if(deletes > inserts.length) {
-      changes.push({type: 'delete', at: index + inserts.length, value: deletes - inserts.length})
-    }
-  })
-  return changes
+function move(x) {
+  x = x || 0
+  return '\u001b['+ x +'G'
 }
 
+function moveLine(y) {
+  y = y || 0
+  return '\u001b['+ y +';0f'
+}
+
+function delLines (i) {
+  return '\u001b['+ i +'M'
+}
+
+function insertLines (n) {
+  return '\u001b['+ n +'L'
+}
+
+function log(name, str) {
+  stderr(name, JSON.stringify(str))
+  return str
+}
+
+
+var applyChars = require('./diff').apply
+
+function applyLines (patch) {
+  return patch.map(function (op) {
+    if(op.type === 'update')
+      return moveLine(op.at + 1) + applyChars(op.value)
+    if(op.type === 'delete')
+      return moveLine(op.at + 1) + delLines(op.value)
+    if(op.type === 'insert')
+      return moveLine(op.at + 1) + insertLines(op.value.length) + op.value.join('\n')
+  }).join('')
+}
+
+exports.apply = applyLines
 
 if(!module.parent) {
   var inspect = require('util').inspect

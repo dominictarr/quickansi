@@ -1,4 +1,5 @@
 var diff = require('adiff').diff
+var updateableDiff = require('./updateable')
 
 /*
 so, interesting discovery.
@@ -21,7 +22,7 @@ var stderr = process.stderr.isTTY ? function () {} : function () {
 }
 
 exports.diff = function (a, b) {
-  return diff(a.split(''), b.split(''))
+  return updateableDiff(a.split(''), b.split(''))
 }
 
 function move(x, current) {
@@ -30,10 +31,7 @@ function move(x, current) {
 }
 
 function del (i, current) {
-  //var s = ''
-//  while(i)
-    return '\u001b['+(i--)+'P'
-//  return s
+  return '\u001b['+ i +'P'
 }
 
 function backspace (n) {
@@ -44,7 +42,7 @@ function backspace (n) {
 }
 
 function insert (n) {
-  return '\u001b['+n+'@'
+  return '\u001b['+ n +'@'
 }
 
 function log(name, str) {
@@ -52,19 +50,23 @@ function log(name, str) {
   return str
 }
 
-exports.apply = function (a, current) {
-  return a.map(function (e) {
-    var index = e.shift()
-    var deletes = e.shift()
-    var chars = e.join('')
-    if(deletes == chars.length) //straight forward replace
-      return log('REPLACE', move(index + 1) + chars)
-    else if(deletes > chars.length) {      
-      return log('DELETE', move(index + 1) + del(deletes - chars.length) + chars)
-    }
-    else if(deletes < chars.length) {
-      var inserts = chars.length - deletes
-      return log('INSERT', move(index + 1) + insert(inserts) + chars)
-    }
+
+function applyChars (patch) {
+  var next = 0
+  return patch.map(function (op) {
+    return (op.at === next++ ? '' : move(next = op.at + 1)) +
+      ( op.type === 'update' ? op.value
+      : op.type === 'delete' ? del(op.value)
+      :                        insert(op.value.length) + op.value.join(''))
+      
+//    if(op.type === 'update')
+//      return  + op.value
+//    if(op.type === 'delete')
+//      return move(op.at + 1) + del(op.value)
+//    if(op.type === 'insert')
+//      return move(op.at + 1) + insert(op.value.length) + op.value.join('')
+
   }).join('')
 }
+
+exports.apply = applyChars

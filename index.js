@@ -1,9 +1,9 @@
 //generate patches to strings, which can be used to update ansi terminals!
+var multi = require('./multiline')
 
-var adiff = require('adiff').diff
-
-var stderr = process.stderr.isTTY ? function () {} : function () {
-  console.error.apply(console, [].slice.call(arguments))
+var stderr = process.stderr.isTTY ? function () {} : function (value) {
+  var inspect = require('util').inspect
+  console.error(inspect(value, {depth: 10}))
 }
 
 function diff (a, b) {
@@ -46,9 +46,7 @@ function del (i, current) {
 function quick (stdout, opts) {
   stdout = stdout || process.stdout
   stdout.write(move())
-  opts = opts || {
-   diff: diff, apply: apply
-  }
+  opts = opts || multi
   var current = ''
   return function update (a) {
 //    stdout.write(move(0, 0))
