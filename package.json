@@ -8,10 +8,13 @@
     "url": "git://github.com/dominictarr/quickansi.git"
   },
   "dependencies": {
-    "adiff": "~0.2.12",
-    "optimist": "~0.6.0"
+    "adiff": "~0.2.12"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "optimist": "~0.6.0",
+    "ansi-recover": "git:github.com/dominictarr/ansi-recover.git#88241d33fa28b7af92c923c8a03a5c33ca0c53d1",
+    "modem-stream": "git:github.com/dominictarr/modem-stream.git#c7aae6fbba05488ad5ffa6fbf5cc320bca401fa9"
+  },
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done"
   },
