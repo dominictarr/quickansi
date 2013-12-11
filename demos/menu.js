@@ -1,18 +1,18 @@
 
 var frames = [[
-  '~ SHOPPING LIST ~', 
+  '~ SHOPPING LIST ~',
   '',
   '*[vege]',
   '* fruit',
   '* other stuff'
 ], [
-  '~ SHOPPING LIST ~', 
+  '~ SHOPPING LIST ~',
   '',
   '* vege',
   '*[fruit]',
   '* other stuff'
 ], [
- '~ SHOPPING LIST ~', 
+ '~ SHOPPING LIST ~',
   '',
   '* vege',
   '* fruit',
@@ -23,7 +23,7 @@ var frames = [[
   '  - elderberry',
   '* other stuff',
 ], [
- '~ SHOPPING LIST ~', 
+ '~ SHOPPING LIST ~',
   '',
   '* vege',
   '* fruit',
@@ -34,7 +34,7 @@ var frames = [[
   '  - elderberry',
   '* other stuff',
 ], [
- '~ SHOPPING LIST ~', 
+ '~ SHOPPING LIST ~',
   '',
   '* vege',
   '* fruit',
@@ -45,7 +45,7 @@ var frames = [[
   '  - elderberry',
   '* other stuff',
 ], [
- '~ SHOPPING LIST ~', 
+ '~ SHOPPING LIST ~',
   '',
   '* vege',
   '* fruit',
@@ -56,7 +56,7 @@ var frames = [[
   '  - elderberry',
   '* other stuff',
 ], [
- '~ SHOPPING LIST ~', 
+ '~ SHOPPING LIST ~',
   '',
   '* vege',
   '* fruit',
@@ -67,7 +67,7 @@ var frames = [[
   '  -[elderberry]',
   '* other stuff',
 ], [
- '~ SHOPPING LIST ~', 
+ '~ SHOPPING LIST ~',
   '',
   '* vege',
   '* fruit',

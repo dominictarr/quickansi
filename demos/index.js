@@ -1,4 +1,8 @@
 var opts = require('optimist').argv, stream
+
+if(!module.parent) {
+  console.error('USAGE: node demos/marquee.js --baud $MODEM_SPEED')
+}
 if(opts.fast)
   stream = process.stdout
 else {
@@ -15,5 +19,4 @@ module.exports = require('../') (
   :              null
 )
 
-if(!module.parent)
-  console.log('USAGE: node demos/marquee.js --baud $MODEM_SPEED')
+
