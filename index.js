@@ -31,7 +31,7 @@ function apply (patch) {
 
 function move(x, current) {
   x = x || 0
-  return '\u001b['+ x +'G'
+  return '\x1b['+ x +'G'
 }
 
 function del (i, current) {
@@ -39,7 +39,7 @@ function del (i, current) {
 
   var s = ''
   while(i--)
-    s += '\u001b[3~'
+    s += '\x1b[3~'
   return s
 }
 

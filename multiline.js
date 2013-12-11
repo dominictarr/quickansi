@@ -22,22 +22,35 @@ exports.diff = function (a, b) {
   })
 }
 
+function move(x, current) {
+  x = x || 0
+  return '\x1b['+ x +'G'
+}
+
+function del (i, current) {
+  return '\x1b['+ i +'P'
+}
+
+function insert (n) {
+  return '\x1b['+ n +'@'
+}
+
 function move(x) {
   x = x || 0
-  return '\u001b['+ x +'G'
+  return '\x1b['+ x +'G'
 }
 
 function moveLine(y) {
   y = y || 0
-  return '\u001b['+ y +';0f'
+  return '\x1b['+ y +';0f'
 }
 
 function delLines (i) {
-  return '\u001b['+ i +'M'
+  return '\x1b['+ i +'M'
 }
 
 function insertLines (n) {
-  return '\u001b['+ n +'L'
+  return '\x1b['+ n +'L'
 }
 
 function log(name, str) {
@@ -45,8 +58,15 @@ function log(name, str) {
   return str
 }
 
-
-var applyChars = require('./diff').apply
+function applyChars (patch) {
+  var next = 0
+  return patch.map(function (op) {
+    return (op.at === next++ ? '' : move(next = op.at + 1)) +
+      ( op.type === 'update' ? op.value
+      : op.type === 'delete' ? del(op.value)
+      :                        insert(op.value.length) + op.value.join(''))
+  }).join('')
+}
 
 function applyLines (patch) {
   return patch.map(function (op) {
@@ -61,7 +81,3 @@ function applyLines (patch) {
 
 exports.apply = applyLines
 
-if(!module.parent) {
-  var inspect = require('util').inspect
-  console.error(inspect(exports.diff('Hello\nthere\n.', '!HellO\n~/~\nthere'), {depth: 10}))
-}
