@@ -6,7 +6,7 @@ if(!module.parent) {
 if(opts.fast)
   stream = process.stdout
 else {
-  stream = require('modem-stream')(opts.baud || 300)
+  stream = require('modem-stream')(opts.baud || 30000)
   stream.pipe(process.stdout)
 }
 
