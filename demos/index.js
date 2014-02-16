@@ -12,11 +12,6 @@ else {
 
 require('ansi-recover')({cursor: false})
 
-module.exports = require('../') (
-  stream,
-    opts.diff  ? require('../diff')
-  : opts.multi ? require('../multiline')
-  :              null
-)
+module.exports = require('../') (stream)
 
 
