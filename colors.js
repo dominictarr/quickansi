@@ -8,6 +8,13 @@
 //no that doesn't work if you have a region that changes colour
 //but not text.
 
+//the simplest solution is to split into chars & codes,
+//and then wrap every character with any codes that applies to it.
+
+//TODO: dewrap unnecessary codes before writing out.
+//currently the color codes are written out around each char
+//which aplifies writes about 8x for colored characters.
+
 exports = module.exports = function (string) {
   console.error('split', string)
   //return string
