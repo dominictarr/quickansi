@@ -1,7 +1,7 @@
 {
   "name": "quickansi",
   "description": "flicker-free ansi animations",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "homepage": "https://github.com/dominictarr/quickansi",
   "repository": {
     "type": "git",
