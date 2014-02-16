@@ -1,11 +1,15 @@
 var updateableDiff = require('./updateable')
+var split = require('./colors')
+
+//TODO: split with colours applied,
+//so that colours work right across lines.
 
 function toLines (a) {
-  return a.split('\n')
+  return split.lines(split(a))
 }
 
 function toChars (a) {
-  return a.split('')
+  return a
 }
 
 function move (x, current) {
