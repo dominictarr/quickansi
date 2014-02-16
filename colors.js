@@ -16,8 +16,6 @@
 //which aplifies writes about 8x for colored characters.
 
 exports = module.exports = function (string) {
-  console.error('split', string)
-  //return string
   return exports.group(exports.split(string))
 }
 
