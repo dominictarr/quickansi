@@ -38,13 +38,17 @@ function insertLines (n) {
   return '\x1b['+ n +'L'
 }
 
+function join(ary, s) {
+  return ary.join('string' === typeof s ? s : '')
+}
+
 function applyChars (patch) {
   var next = 0
   return patch.map(function (op) {
     return (op.at === next++ ? '' : move(next = op.at + 1)) +
       ( op.type === 'update' ? op.value
       : op.type === 'delete' ? del(op.value)
-      :                        insert(op.value.length) + op.value.join(''))
+      :                        insert(op.value.length) + join(op.value))
   }).join('')
 }
 
@@ -54,7 +58,8 @@ function applyLines (patch) {
     return moveLine (op.at + 1) +
       ( op.type === 'update' ? applyChars(op.value)
       : op.type === 'delete' ? delLines(op.value)
-      :                        insertLines(op.value.length) + op.value.join('\n'))
+      :                        insertLines(op.value.length)
+                                + op.value.map(join).join('\n'))
   }).join('')
 }
 
